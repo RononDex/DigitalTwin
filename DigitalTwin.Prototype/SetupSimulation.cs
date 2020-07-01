@@ -13,7 +13,6 @@ namespace DigitalTwin.Prototype
         {
             var simulationSystem = new SimulationSystem();
 
-
             // Add a thread and a simulation engine to the simulation framework
             simulationSystem.AddSimulationThread(new SimulationThread(new SimulationEngine[] { new EmployeeMovementEngine() }.ToList()));
 
@@ -57,7 +56,6 @@ namespace DigitalTwin.Prototype
             {
                 warehouse.Objects.Add(new Trolley());
             }
-
 
             simulationSystem.World.Objects.Add(warehouse);
 

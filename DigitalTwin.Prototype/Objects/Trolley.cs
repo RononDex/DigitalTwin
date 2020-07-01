@@ -6,7 +6,7 @@ namespace DigitalTwin.Prototype.Objects
 {
     public class Trolley : SimulationGroup
     {
-        public IList<ItemProductStatic> ItemProductStatics
+        public List<ItemProductStatic> ItemProductStatics
         {
             get => Objects
                 .Where(o => o is ItemProductStatic)
