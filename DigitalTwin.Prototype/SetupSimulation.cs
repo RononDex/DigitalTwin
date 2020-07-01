@@ -34,11 +34,11 @@ namespace DigitalTwin.Prototype
             warehouse.Objects.Add(employee2);
 
             // Generate warehouseCompartments
-            for (var i = 0; i < 11; i++)
+            for (var i = 0; i < 17; i++)
             {
                 for (var j = 0; j < 12; j++)
                 {
-                    if (i != 5)
+                    if (i != 8)
                     {
                         for (var k = 0; k < 5; k++)
                         {
