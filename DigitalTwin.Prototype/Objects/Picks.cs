@@ -3,7 +3,7 @@ using Simulation;
 
 namespace DigitalTwin.Prototype.Objects
 {
-    public class Pick : SimulationObject
+    public class Picks : SimulationObject
     {
         
     }
