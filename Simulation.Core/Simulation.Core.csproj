@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Authors>Tino Heuberger</Authors>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>CSE0003;CC0038;IDE0008;CC0035;CC0045;CC0042;CC0076</NoWarn>
+  </PropertyGroup>
+
+</Project>
