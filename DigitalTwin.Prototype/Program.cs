@@ -1,4 +1,5 @@
-﻿using Simulation;
+﻿using System;
+using Simulation;
 
 namespace DigitalTwin.Prototype
 {
@@ -6,10 +7,13 @@ namespace DigitalTwin.Prototype
     {
         static void Main(string[] args)
         {
-            var simulationSystem = new SimulationSystem();
+            var simulationSystem = SetupSimulation.SetupMockedWarehouseForPresentation();
 
-            // Add a thread and a simulation engine to the simulation framework
-            // system.AddSimulationThread(new SimulationThread(new SimulationEngine[] { new GravityEngine() }.ToList()));
+            while (true)
+            {
+                var timeStep = new TimeSpan(hours: 0, minutes: 0, seconds: 30);
+                simulationSystem.Update(timeStep);
+            }
         }
     }
 }

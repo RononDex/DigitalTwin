@@ -1,15 +1,18 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using Simulation;
 
 namespace DigitalTwin.Prototype.Objects
 {
-    public class WarehouseCompartment : SimulationObject
+    public class WarehouseCompartment : SimulationGroup
     {
         public IList<ItemProductStatic> ItemProductStatics
         {
-            get => (List<ItemProductStatic>)this[nameof(ItemProductStatics)];
-            set => this[nameof(ItemProductStatics)] = value;
+            get => Objects
+                .Where(o => o is ItemProductStatic)
+                .Select(o => o as ItemProductStatic)
+                .ToList();
         }
 
         public Vector3 Location

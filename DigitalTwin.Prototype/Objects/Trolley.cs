@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Simulation;
 
 namespace DigitalTwin.Prototype.Objects
 {
-    public class Trolley : SimulationObject
+    public class Trolley : SimulationGroup
     {
-        public IList<ItemProductStatic>? ItemProductStatics
+        public IList<ItemProductStatic> ItemProductStatics
         {
-            get => (List<ItemProductStatic>?)this[nameof(ItemProductStatics)];
-            set => this[nameof(ItemProductStatics)] = value;
+            get => Objects
+                .Where(o => o is ItemProductStatic)
+                .Select(o => o as ItemProductStatic)
+                .ToList();
         }
 
         public Employee Employee
