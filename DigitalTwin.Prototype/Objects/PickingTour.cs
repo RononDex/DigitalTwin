@@ -8,7 +8,7 @@ namespace DigitalTwin.Prototype.Objects
     {
         public IList<Pick> Picks
         {
-            get => (List<Pick>)this[nameof(Picks)];
+            get => (IList<Pick>)this[nameof(Picks)];
             set => this[nameof(Picks)] = value;
         }
 
@@ -19,4 +19,3 @@ namespace DigitalTwin.Prototype.Objects
         }
     }
 }
-

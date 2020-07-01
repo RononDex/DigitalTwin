@@ -7,7 +7,7 @@ using Simulation;
 
 namespace DigitalTwin.Prototype
 {
-    public class SetupSimulation
+    public static class SetupSimulation
     {
         public static SimulationSystem SetupMockedWarehouseForPresentation()
         {
@@ -15,6 +15,7 @@ namespace DigitalTwin.Prototype
 
             // Add a thread and a simulation engine to the simulation framework
             simulationSystem.AddSimulationThread(new SimulationThread(new SimulationEngine[] { new EmployeeMovementEngine() }.ToList()));
+            simulationSystem.AddSimulationThread(new SimulationThread(new SimulationEngine[] { new RandomPickingTourGenerator() }.ToList()));
 
             var warehouse = new Warehouse();
             var employee1 = new Employee

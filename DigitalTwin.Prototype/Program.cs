@@ -13,7 +13,7 @@ namespace DigitalTwin.Prototype
             var dateTimeFromLastUpdate = DateTime.Now;
             while (true)
             {
-                var timeStep = (DateTime.Now - dateTimeFromLastUpdate) * 2;
+                var timeStep = (DateTime.Now - dateTimeFromLastUpdate);
                 simulationSystem.Update(timeStep);
                 ConsoleOutputRenderer.RenderCurrentState(simulationSystem);
                 dateTimeFromLastUpdate = DateTime.Now;

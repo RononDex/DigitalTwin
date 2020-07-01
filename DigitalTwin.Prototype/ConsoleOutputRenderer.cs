@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Numerics;
 using DigitalTwin.Prototype.Objects;
 using Simulation;
 
@@ -40,6 +41,14 @@ namespace DigitalTwin.Prototype
                 Console.Write("o");
                 Console.ForegroundColor = color;
             }
+
+            var warehouseDimensions = new Vector2(
+                warehouse.WarehouseCompartments.Max(wc => wc.Location.X),
+                warehouse.WarehouseCompartments.Max(wc => wc.Location.Y));
+
+            var numberOfOpenPickingTours = warehouse.PickingTours.Count;
+            Console.SetCursorPosition(0, Convert.ToInt32(warehouseDimensions.Y) + 6);
+            Console.Write($"Open PickingTours: {numberOfOpenPickingTours}                   ");
         }
     }
 }

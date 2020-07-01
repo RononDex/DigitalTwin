@@ -22,6 +22,14 @@ namespace DigitalTwin.Prototype.Objects
                 .ToList();
         }
 
+        public IList<PickingTour> PickingTours
+        {
+            get => Objects
+                .Where(o => o is PickingTour)
+                .Select(o => o as PickingTour)
+                .ToList();
+        }
+
         public IList<Trolley> Trolleys
         {
             get => Objects
