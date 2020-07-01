@@ -20,14 +20,16 @@ namespace DigitalTwin.Prototype
             var warehouse = new Warehouse();
             var employee1 = new Employee
             {
-                Speed = 10, // change this?
+                Speed = 2.5F, // change this?
                 CurrentLocation = new Vector3(0, 0, 0),
+                Status = Employee.EmployeeStatus.Traveling,
             };
 
             var employee2 = new Employee
             {
-                Speed = 9, // change this?
+                Speed = 2.1F, // change this?
                 CurrentLocation = new Vector3(0, 0, 0),
+                Status = Employee.EmployeeStatus.Traveling,
         };
 
             warehouse.Objects.Add(employee1);
@@ -49,7 +51,8 @@ namespace DigitalTwin.Prototype
                             var ips = new ItemProductStatic
                             {
                                 Name = $"MuchAwesomeIps{i}-{j}-{k}",
-                            };
+                                WarehouseCompartment = warehouseCompartment,
+                        };
                             warehouseCompartment.Objects.Add(ips);
                             warehouse.Objects.Add(warehouseCompartment);
                         }

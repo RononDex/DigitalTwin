@@ -20,6 +20,16 @@ namespace DigitalTwin.Prototype
             RenderWarehouseDimensions(simulationSystem);
         }
 
+        internal static void UnrenderCurrentEmployeePositions(SimulationSystem simulationSystem)
+        {
+            var warehouse = (Warehouse)simulationSystem.World.Objects.First();
+            foreach (var employee in warehouse.Employees)
+            {
+                Console.SetCursorPosition(Convert.ToInt32(employee.CurrentLocation.X + 4), Convert.ToInt32(employee.CurrentLocation.Y + 4));
+                Console.Write(" ");
+            }
+        }
+
         private static void RenderWarehouseDimensions(SimulationSystem simulationSystem)
         {
             var warehouse = (Warehouse)simulationSystem.World.Objects.First();
@@ -62,6 +72,7 @@ namespace DigitalTwin.Prototype
         private static void RenderWarehouse(SimulationSystem simulationSystem)
         {
             var warehouse = (Warehouse)simulationSystem.World.Objects.First();
+
             foreach (var warehouseCompartment in warehouse.WarehouseCompartments)
             {
                 if (warehouseCompartment.Location.Z == 0)

@@ -17,5 +17,18 @@ namespace DigitalTwin.Prototype.Objects
             get => (Pick)this[nameof(CurrentPick)];
             set => this[nameof(CurrentPick)] = value;
         }
+
+        public PickingTourState State
+        {
+            get => (PickingTourState)this[nameof(State)];
+            set => this[nameof(State)] = value;
+        }
+
+        public enum PickingTourState
+        {
+            New,
+            InProgress,
+            Finished,
+        }
     }
 }

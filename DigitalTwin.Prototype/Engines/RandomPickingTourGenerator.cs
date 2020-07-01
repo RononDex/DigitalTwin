@@ -35,18 +35,21 @@ namespace DigitalTwin.Prototype.Engines
                                     .SelectMany(wc => wc.ItemProductStatics)
                                     .Where(ips => !ipsAlreadyInPickingTour.Contains(ips.Name))
                                     .ToList();
+                    var ips = ipsNotYetInPickingTour[randomGenerator.Next(0, ipsNotYetInPickingTour.Count - 1)];
                     picks.Add(new Pick
                     {
                         ItemProductStatics = new List<ItemProductStatic>
                         {
-                            ipsNotYetInPickingTour[randomGenerator.Next(0, ipsNotYetInPickingTour.Count - 1)],
+                            ips,
                         },
+                        WarehouseCompartment = ips.WarehouseCompartment,
                     });
                 }
 
                 warehouse.Objects.Add(new PickingTour
                 {
                     Picks = picks,
+                    State = PickingTour.PickingTourState.New
                 });
 
                 nextPickingTourGenerationTime = DateTime.Now + new TimeSpan(
