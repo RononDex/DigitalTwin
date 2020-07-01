@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace DigitalTwin.Prototype
 {
@@ -17,6 +18,7 @@ namespace DigitalTwin.Prototype
                 simulationSystem.Update(timeStep);
                 ConsoleOutputRenderer.RenderCurrentState(simulationSystem);
                 dateTimeFromLastUpdate = DateTime.Now;
+                Thread.Sleep(10);
             }
         }
     }
