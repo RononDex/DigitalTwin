@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Simulation
 {
@@ -28,11 +24,6 @@ namespace Simulation
         /// </summary>
         public SimulationWorld World { get; private set; }
 
-        ///// <summary>
-        ///// List of all simulation engines that do changes to this simulation system
-        ///// </summary>
-        //public List<SimulationEngine> SimulationEngines { get; private set; }
-
         /// <summary>
         /// Mapping, which Thread handels which engine(s)
         /// </summary>
@@ -45,7 +36,6 @@ namespace Simulation
         /// <summary>
         /// Gets all simulation threads
         /// </summary>
-        /// <returns></returns>
         public SimulationThread[] GetThreads()
         {
             return this.Threads.ToArray();

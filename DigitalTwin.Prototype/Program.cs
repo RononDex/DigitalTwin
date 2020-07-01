@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Simulation;
 
 namespace DigitalTwin.Prototype
 {
@@ -6,7 +6,10 @@ namespace DigitalTwin.Prototype
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var simulationSystem = new SimulationSystem();
+
+            // Add a thread and a simulation engine to the simulation framework
+            // system.AddSimulationThread(new SimulationThread(new SimulationEngine[] { new GravityEngine() }.ToList()));
         }
     }
 }
