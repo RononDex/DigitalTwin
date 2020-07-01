@@ -7,7 +7,7 @@ namespace DigitalTwin.Prototype.Engines
     {
         public override void UpdateWorld(SimulationContext context, TimeSpan step)
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
     }
 }

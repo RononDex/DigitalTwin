@@ -1,5 +1,4 @@
 ﻿using System;
-using Simulation;
 
 namespace DigitalTwin.Prototype
 {
@@ -7,12 +6,17 @@ namespace DigitalTwin.Prototype
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Starting simulation...");
             var simulationSystem = SetupSimulation.SetupMockedWarehouseForPresentation();
 
+            Console.Clear();
+            var dateTimeFromLastUpdate = DateTime.Now;
             while (true)
             {
-                var timeStep = new TimeSpan(hours: 0, minutes: 0, seconds: 30);
+                var timeStep = (DateTime.Now - dateTimeFromLastUpdate) * 2;
                 simulationSystem.Update(timeStep);
+                ConsoleOutputRenderer.RenderCurrentState(simulationSystem);
+                dateTimeFromLastUpdate = DateTime.Now;
             }
         }
     }
