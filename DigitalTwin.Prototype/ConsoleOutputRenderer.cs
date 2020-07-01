@@ -17,6 +17,19 @@ namespace DigitalTwin.Prototype
             RenderWarehouse(simulationSystem);
             RenderEmployees(simulationSystem);
             RenderOpenPickingTours(simulationSystem);
+            RenderWarehouseDimensions(simulationSystem);
+        }
+
+        private static void RenderWarehouseDimensions(SimulationSystem simulationSystem)
+        {
+            var warehouse = (Warehouse)simulationSystem.World.Objects.First();
+            var warehouseDimensions = new Vector3(
+                warehouse.WarehouseCompartments.Max(wc => wc.Location.X),
+                warehouse.WarehouseCompartments.Max(wc => wc.Location.Y),
+                warehouse.WarehouseCompartments.Max(wc => wc.Location.Z));
+
+            Console.SetCursorPosition(0, Convert.ToInt32(warehouseDimensions.Y) + 9);
+            Console.Write($"Warehouse Dimensions:    X: {warehouseDimensions.X}    Y: {warehouseDimensions.Y}    Z: {warehouseDimensions.Z}");
         }
 
         private static void RenderOpenPickingTours(SimulationSystem simulationSystem)
