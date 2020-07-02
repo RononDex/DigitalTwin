@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using DigitalTwin.Prototype.Objects;
@@ -10,23 +11,65 @@ namespace DigitalTwin.Prototype
     {
         private static ConsoleSpinner Spinner = new ConsoleSpinner();
 
+        private static List<List<char>> oldRender;
+
         public static void RenderCurrentState(SimulationSystem simulationSystem)
         {
+            var currentRender = new List<List<char>>();
+
+            for (var i = 0; i < 50; i++)
+            {
+                currentRender.Add(new List<char>());
+                for (var j = 0; j < 50; j++)
+                {
+                    currentRender[i].Add(' ');
+                }
+            }
+            if (oldRender == null) oldRender = CopyList(currentRender);
+
             Console.CursorVisible = false;
             Spinner.Turn();
-            RenderWarehouse(simulationSystem);
-            RenderEmployees(simulationSystem);
+            RenderWarehouse(simulationSystem, currentRender);
+            RenderEmployees(simulationSystem, currentRender);
             RenderOpenPickingTours(simulationSystem);
             RenderWarehouseDimensions(simulationSystem);
+            RenderWarehouseDelta(currentRender);
+            oldRender = CopyList(currentRender);
         }
 
-        internal static void UnrenderCurrentEmployeePositions(SimulationSystem simulationSystem)
+        private static List<List<char>> CopyList(List<List<char>> currentRender)
         {
-            var warehouse = (Warehouse)simulationSystem.World.Objects.First();
-            foreach (var employee in warehouse.Employees)
+            var copiedList = new List<List<char>>();
+            foreach (var sublist in currentRender)
             {
-                Console.SetCursorPosition(Convert.ToInt32(employee.CurrentLocation.X + 4), Convert.ToInt32(employee.CurrentLocation.Y + 4));
-                Console.Write(" ");
+                copiedList.Add(new List<char>(sublist));
+            }
+            return copiedList;
+        }
+
+        private static void RenderWarehouseDelta(List<List<char>> currentRender)
+        {
+            for (var x = currentRender.Count - 1; x >= 0; x--)
+            {
+                for (var y = currentRender.Count - 1; y >= 0; y--)
+                {
+                    if (oldRender[x][y] != currentRender[x][y])
+                    {
+                        if (currentRender[x][y] == 'o')
+                        {
+                            var color = Console.ForegroundColor;
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.SetCursorPosition(x, y);
+                            Console.Write(currentRender[x][y]);
+                            Console.ForegroundColor = color;
+                        }
+                        else
+                        {
+                            Console.SetCursorPosition(x, y);
+                            Console.Write(currentRender[x][y]);
+                        }
+                    }
+                }
             }
         }
 
@@ -56,18 +99,12 @@ namespace DigitalTwin.Prototype
             Console.WriteLine($"Picking Tours(finished): {numberOfOpenPickingTours.Count(p => p.State == PickingTour.PickingTourState.Finished)}");
         }
 
-        private static void RenderEmployees(SimulationSystem simulationSystem)
+        private static void RenderEmployees(SimulationSystem simulationSystem, List<List<char>> currentRender)
         {
             var warehouse = (Warehouse)simulationSystem.World.Objects.First();
             foreach (var employee in warehouse.Employees)
             {
-                Console.SetCursorPosition(
-                    Convert.ToInt32(employee.CurrentLocation.X) + 4,
-                    Convert.ToInt32(employee.CurrentLocation.Y) + 4);
-                var color = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("o");
-                Console.ForegroundColor = color;
+                currentRender[Convert.ToInt32(employee.CurrentLocation.X) + 4][Convert.ToInt32(employee.CurrentLocation.Y) + 4] = 'o';
             }
 
             var warehouseDimensions = new Vector2(
@@ -78,7 +115,7 @@ namespace DigitalTwin.Prototype
             Console.WriteLine($"Employees(soon to be unemployed): {warehouse.Employees.Count(e => e.PickingTour == null)}");
         }
 
-        private static void RenderWarehouse(SimulationSystem simulationSystem)
+        private static void RenderWarehouse(SimulationSystem simulationSystem, List<List<char>> currentRender)
         {
             var warehouse = (Warehouse)simulationSystem.World.Objects.First();
 
@@ -86,10 +123,7 @@ namespace DigitalTwin.Prototype
             {
                 if (warehouseCompartment.Location.Z == 0)
                 {
-                    Console.SetCursorPosition(
-                        Convert.ToInt32(warehouseCompartment.Location.X) + 4,
-                        Convert.ToInt32(warehouseCompartment.Location.Y) + 4);
-                    Console.Write("□");
+                    currentRender[Convert.ToInt32(warehouseCompartment.Location.X) + 4][Convert.ToInt32(warehouseCompartment.Location.Y) + 4] = '□';
                 }
             }
 
@@ -98,33 +132,29 @@ namespace DigitalTwin.Prototype
                 warehouse.WarehouseCompartments.Max(wc => wc.Location.Y));
             for (var x = 3; x <= warehouseDimensions.X + 7; x++)
             {
-                Console.SetCursorPosition(x, 3);
                 if (x == 3 || x == warehouseDimensions.X + 7)
                 {
-                    Console.Write("+");
+                    currentRender[x][3] = '+';
                 }
                 else
                 {
-                    Console.Write("-");
+                    currentRender[x][3] = '-';
                 }
 
-                Console.SetCursorPosition(x, Convert.ToInt32(warehouseDimensions.Y) + 6);
                 if (x == 3 || x == warehouseDimensions.X + 7)
                 {
-                    Console.Write("+");
+                    currentRender[x][Convert.ToInt32(warehouseDimensions.Y) + 6] = '+';
                 }
                 else
                 {
-                    Console.Write("-");
+                    currentRender[x][Convert.ToInt32(warehouseDimensions.Y) + 6] = '-';
                 }
             }
             for (var y = 4; y < warehouseDimensions.Y + 6; y++)
             {
-                Console.SetCursorPosition(3, y);
-                Console.Write("|");
+                currentRender[3][y] = '|';
 
-                Console.SetCursorPosition(7 + Convert.ToInt32(warehouseDimensions.X), y);
-                Console.Write("|");
+                currentRender[7 + Convert.ToInt32(warehouseDimensions.X)][y] = '|';
             }
         }
     }

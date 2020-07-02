@@ -14,8 +14,6 @@ namespace DigitalTwin.Prototype
             var dateTimeFromLastUpdate = DateTime.Now;
             while (true)
             {
-
-                ConsoleOutputRenderer.UnrenderCurrentEmployeePositions(simulationSystem);
                 var timeStep = (DateTime.Now - dateTimeFromLastUpdate);
                 simulationSystem.Update(timeStep * 4);
                 ConsoleOutputRenderer.RenderCurrentState(simulationSystem);
