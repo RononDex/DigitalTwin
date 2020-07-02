@@ -13,5 +13,13 @@ namespace DigitalTwin.Prototype
                 Convert.ToSingle(vector.Y / magnitude),
                 Convert.ToSingle(vector.Z / magnitude));
         }
+
+        public static Vector3 Floor(this Vector3 vector)
+        {
+            return new Vector3(
+                Convert.ToSingle(Math.Floor(vector.X)),
+                Convert.ToSingle(Math.Floor(vector.Y)),
+                Convert.ToSingle(Math.Floor(vector.Z)));
+        }
     }
 }

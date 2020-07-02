@@ -9,7 +9,7 @@ namespace DigitalTwin.Prototype{
     public class Pathfinder{
         public static Vector3 GetNextLocation(Vector3 currentLocation, Vector3 targetLocation, SimulationContext context){
             Location current = null;
-            var start = new Location { XYZ = new Vector3((float)Math.Floor(currentLocation.X), (float)Math.Floor(currentLocation.Y), (float)Math.Floor(currentLocation.Z))};
+            var start = new Location { XYZ = currentLocation.Floor()};
             var target = new Location { XYZ = targetLocation };
             var openList = new List<Location>();
             var closedList = new List<Location>();
@@ -21,17 +21,12 @@ namespace DigitalTwin.Prototype{
             while (openList.Count > 0)
             {
                 // get the square with the lowest F score
-                var lowest = openList.Min(l => l.F);
-                current = openList.First(l => l.F == lowest);
+                current = openList.Aggregate((min, l) => min = min.F < l.F ? min : l);
 
-                // add the current square to the closed list
                 closedList.Add(current);
-                
-                // if we added the destination to the closed list, we've found a path
                 if (current.XYZ.X == target.XYZ.X && current.XYZ.Y == target.XYZ.Y-1)
                     break;
                 
-                // remove it from the open list
                 openList.Remove(current);
 
                 var adjacentSquares = GetWalkableAdjacentSquares(current.XYZ, context);
@@ -40,13 +35,13 @@ namespace DigitalTwin.Prototype{
                 foreach(var adjacentSquare in adjacentSquares)
                 {
                     // if this adjacent square is already in the closed list, ignore it
-                    if (closedList.FirstOrDefault(l => l.XYZ.X == adjacentSquare.XYZ.X
-                            && l.XYZ.Y == adjacentSquare.XYZ.Y) != null)
+                    if (closedList.Any(l => l.XYZ.X == adjacentSquare.XYZ.X
+                            && l.XYZ.Y == adjacentSquare.XYZ.Y))
                         continue;
                 
                     // if it's not in the open list...
-                    if (openList.FirstOrDefault(l => l.XYZ.X == adjacentSquare.XYZ.X
-                            && l.XYZ.Y == adjacentSquare.XYZ.Y) == null)
+                    if (!openList.Any(l => l.XYZ.X == adjacentSquare.XYZ.X
+                            && l.XYZ.Y == adjacentSquare.XYZ.Y))
                     {
                         // compute its score, set the parent
                         adjacentSquare.G = g;
@@ -55,7 +50,7 @@ namespace DigitalTwin.Prototype{
                         adjacentSquare.Parent = current;
                 
                         // and add it to the open list
-                        openList.Insert(0, adjacentSquare);
+                        openList.Add(adjacentSquare);
                     }
                     else
                     {
@@ -87,6 +82,7 @@ namespace DigitalTwin.Prototype{
         private static List<Location> GetWalkableAdjacentSquares(Vector3 current, SimulationContext context)
         {
             var warehouse = context.World.Objects.First() as Warehouse;
+            current = current.Floor();
             
             var proposedLocations = new List<Location>()
             {
@@ -102,8 +98,8 @@ namespace DigitalTwin.Prototype{
             };
 
             return proposedLocations
-                .Where(l => !warehouse.WarehouseCompartments.Any(wc => wc.Location == l.XYZ))
-                .Where(l => !warehouse.Employees.Any(e => e.CurrentLocation == l.XYZ))
+                .Where(l => !warehouse.WarehouseCompartments.Any(wc => wc.Location.Floor() == l.XYZ.Floor()))
+                .Where(l => !warehouse.Employees.Any(e => e.CurrentLocation.Floor() == l.XYZ.Floor()))
                 .Where(l => l.XYZ.X >= 0 && l.XYZ.Y >= 0 && l.XYZ.X < warehouse.WarehouseCompartments.Max(wc => wc.Location.X) + 7 && l.XYZ.Z < warehouse.WarehouseCompartments.Max(wc => wc.Location.Y) + 7)
                 .ToList();
         }

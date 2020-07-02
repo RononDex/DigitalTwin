@@ -58,7 +58,7 @@ namespace DigitalTwin.Prototype.Engines
 
         private void MoveEmployeeTowards(Employee employee, Vector3 target, float distance, SimulationContext context)
         {
-            var travelPath = employee.CurrentLocation.X == target.X && employee.CurrentLocation.Y == target.Y
+            var travelPath = employee.CurrentLocation.Floor().X == target.X && (employee.CurrentLocation.Y >= target.Y-1 || employee.CurrentLocation.Y <= target.Y)
                 ? target - employee.CurrentLocation
                 : Pathfinder.GetNextLocation(employee.CurrentLocation, target, context) - employee.CurrentLocation;
             var normalizedVector = travelPath.Normalize();
