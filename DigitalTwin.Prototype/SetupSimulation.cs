@@ -16,6 +16,7 @@ namespace DigitalTwin.Prototype
             // Add a thread and a simulation engine to the simulation framework
             simulationSystem.AddSimulationThread(new SimulationThread(new SimulationEngine[] { new EmployeeMovementEngine() }.ToList()));
             simulationSystem.AddSimulationThread(new SimulationThread(new SimulationEngine[] { new RandomPickingTourGenerator() }.ToList()));
+            simulationSystem.AddSimulationThread(new SimulationThread(new SimulationEngine[] { new EmployeeAdjustmentEngine()  }.ToList()));
 
             var warehouse = new Warehouse();
             var employee1 = new Employee
