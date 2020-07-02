@@ -15,10 +15,10 @@ namespace DigitalTwin.Prototype
             while (true)
             {
                 var timeStep = (DateTime.Now - dateTimeFromLastUpdate);
-                simulationSystem.Update(timeStep * 4);
+                simulationSystem.Update(timeStep * 10);
                 ConsoleOutputRenderer.RenderCurrentState(simulationSystem);
                 dateTimeFromLastUpdate = DateTime.Now;
-                Thread.Sleep(10);
+                Thread.Sleep(20);
             }
         }
     }

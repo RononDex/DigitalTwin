@@ -66,12 +66,12 @@ namespace DigitalTwin.Prototype{
                 }
             }
 
-            var nextStep = closedList.FirstOrDefault(l => IsInFrontOfTarget(l, target));
-            while(nextStep.Parent.XYZ != start.XYZ){
-                nextStep = nextStep.Parent;
+            var previousStep = closedList.FirstOrDefault(l => IsInFrontOfTarget(l, target));
+            while(previousStep.Parent.XYZ != start.XYZ){
+                previousStep = previousStep.Parent;
             }
 
-            return nextStep.XYZ;
+            return previousStep.XYZ;
         }
 
         private static int ComputeHScore(Vector3 current, Vector3 target)
@@ -100,7 +100,7 @@ namespace DigitalTwin.Prototype{
             return proposedLocations
                 .Where(l => !warehouse.WarehouseCompartments.Any(wc => wc.Location.Floor() == l.XYZ.Floor()))
                 .Where(l => !warehouse.Employees.Any(e => e.CurrentLocation.Floor() == l.XYZ.Floor()))
-                .Where(l => l.XYZ.X >= 0 && l.XYZ.Y >= 0 && l.XYZ.X < warehouse.WarehouseCompartments.Max(wc => wc.Location.X) + 7 && l.XYZ.Z < warehouse.WarehouseCompartments.Max(wc => wc.Location.Y) + 7)
+                .Where(l => l.XYZ.X >= 0 && l.XYZ.Y >= 0 && l.XYZ.X < warehouse.WarehouseCompartments.Max(wc => wc.Location.X) + 7 && l.XYZ.Y < warehouse.WarehouseCompartments.Max(wc => wc.Location.Y) + 7)
                 .ToList();
         }
 
