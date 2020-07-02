@@ -27,7 +27,8 @@ namespace DigitalTwin.Prototype.Engines
                 }
 
                 // If employee has a packing tour, move the employee to its next picking target
-                if (employee.PickingTour != null)
+                if (employee.PickingTour != null
+                    && employee.Status == Employee.EmployeeStatus.Traveling)
                 {
                     // Take a trolley
                     if (!warehouse.Trolleys.Any(t => t.Employee == employee))
