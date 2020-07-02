@@ -63,7 +63,7 @@ namespace DigitalTwin.Prototype
             }
 
             // Generate some trolleys
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 100; i++)
             {
                 warehouse.Objects.Add(new Trolley());
             }
