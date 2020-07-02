@@ -36,21 +36,21 @@ namespace DigitalTwin.Prototype
             warehouse.Objects.Add(employee2);
 
             // Generate warehouseCompartments
-            for (var i = 0; i < 17; i++)
+            for (var x = 0; x < 17; x++)
             {
-                for (var j = 0; j < 12; j++)
+                for (var y = 0; y < 24; y+=2)
                 {
-                    if (i != 8)
+                    if (x != 8)
                     {
-                        for (var k = 0; k < 5; k++)
+                        for (var z = 0; z < 5; z++)
                         {
                             var warehouseCompartment = new WarehouseCompartment
                             {
-                                Location = new Vector3(i + 2, j + 2, k),
+                                Location = new Vector3(x + 2, y + 2, z),
                             };
                             var ips = new ItemProductStatic
                             {
-                                Name = $"MuchAwesomeIps{i}-{j}-{k}",
+                                Name = $"MuchAwesomeIps{x}-{y}-{z}",
                                 WarehouseCompartment = warehouseCompartment,
                         };
                             warehouseCompartment.Objects.Add(ips);

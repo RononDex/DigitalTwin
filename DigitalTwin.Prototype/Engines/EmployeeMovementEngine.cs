@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using DigitalTwin.Prototype.Objects;
@@ -29,7 +30,12 @@ namespace DigitalTwin.Prototype.Engines
                 // If employee has a packing tour, move the employee to its next picking target
                 if (employee.PickingTour != null)
                 {
-                    var travelPath = employee.PickingTour.CurrentPick.WarehouseCompartment.Location - employee.CurrentLocation;
+                    var targetLocation = employee.PickingTour.CurrentPick.WarehouseCompartment.Location;
+
+                    var travelPath = employee.CurrentLocation.X == targetLocation.X && employee.CurrentLocation.Y == targetLocation.Y
+                        ? targetLocation - employee.CurrentLocation
+                        : Pathfinder.GetNextLocation(employee.CurrentLocation, targetLocation, context) - employee.CurrentLocation;
+
                     var normalizedVector = travelPath.Normalize();
                     var factor = Convert.ToSingle(employee.Speed * step.TotalSeconds);
                     var pathTravelledInTimeDelta = new Vector3(
