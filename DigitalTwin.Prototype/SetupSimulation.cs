@@ -16,21 +16,23 @@ namespace DigitalTwin.Prototype
             // Add a thread and a simulation engine to the simulation framework
             simulationSystem.AddSimulationThread(new SimulationThread(new SimulationEngine[] { new EmployeeMovementEngine() }.ToList()));
             simulationSystem.AddSimulationThread(new SimulationThread(new SimulationEngine[] { new RandomPickingTourGenerator() }.ToList()));
+            simulationSystem.AddSimulationThread(new SimulationThread(new SimulationEngine[] { new EmployeeAdjustmentEngine() }.ToList()));
+            simulationSystem.AddSimulationThread(new SimulationThread(new SimulationEngine[] { new PickingEngine() }.ToList()));
 
             var warehouse = new Warehouse();
             var employee1 = new Employee
             {
-                Speed = 2.5F, // change this?
+                Speed = 5F, // change this?
                 CurrentLocation = new Vector3(0, 0, 0),
                 Status = Employee.EmployeeStatus.Traveling,
             };
 
             var employee2 = new Employee
             {
-                Speed = 2.1F, // change this?
+                Speed = 5F, // change this?
                 CurrentLocation = new Vector3(0, 0, 0),
                 Status = Employee.EmployeeStatus.Traveling,
-        };
+            };
 
             warehouse.Objects.Add(employee1);
             warehouse.Objects.Add(employee2);
@@ -52,7 +54,7 @@ namespace DigitalTwin.Prototype
                             {
                                 Name = $"MuchAwesomeIps{x}-{y}-{z}",
                                 WarehouseCompartment = warehouseCompartment,
-                        };
+                            };
                             warehouseCompartment.Objects.Add(ips);
                             warehouse.Objects.Add(warehouseCompartment);
                         }

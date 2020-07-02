@@ -27,6 +27,12 @@ namespace DigitalTwin.Prototype.Objects
             set => this[nameof(PickingTour)] = value;
         }
 
+        public DateTime? PickingEndTime
+        {
+            get => (DateTime?)this[nameof(PickingEndTime)];
+            set => this[nameof(PickingEndTime)] = value;
+        }
+
         public EmployeeStatus Status
         {
             get => (EmployeeStatus)this[nameof(Status)];

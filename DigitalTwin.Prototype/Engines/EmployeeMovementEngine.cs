@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using DigitalTwin.Prototype.Objects;
@@ -16,7 +15,7 @@ namespace DigitalTwin.Prototype.Engines
             {
                 // If employee is idle, find new picking tour to start
                 if (employee.PickingTour == null
-                    && employee.Status != Employee.EmployeeStatus.ReturningToHome
+                    && employee.Status == Employee.EmployeeStatus.Traveling
                     && warehouse.PickingTours.Any(pt => pt.State == PickingTour.PickingTourState.New))
                 {
                     employee.PickingTour = warehouse.PickingTours.First(pt => pt.State == PickingTour.PickingTourState.New);
@@ -28,23 +27,46 @@ namespace DigitalTwin.Prototype.Engines
                 }
 
                 // If employee has a packing tour, move the employee to its next picking target
-                if (employee.PickingTour != null)
+                if (employee.PickingTour != null
+                    && employee.Status == Employee.EmployeeStatus.Traveling)
                 {
-                    var targetLocation = employee.PickingTour.CurrentPick.WarehouseCompartment.Location;
+                    // Take a trolley
+                    if (!warehouse.Trolleys.Any(t => t.Employee == employee))
+                    {
+                        warehouse.Trolleys.First(t => t.Employee == null).Employee = employee;
+                    }
 
-                    var travelPath = employee.CurrentLocation.X == targetLocation.X && employee.CurrentLocation.Y == targetLocation.Y
-                        ? targetLocation - employee.CurrentLocation
-                        : Pathfinder.GetNextLocation(employee.CurrentLocation, targetLocation, context) - employee.CurrentLocation;
+                    MoveEmployeeTowards(
+                        employee,
+                        employee.PickingTour.CurrentPick.WarehouseCompartment.Location,
+                        Convert.ToSingle(employee.Speed * step.TotalSeconds), context);
+                }
 
-                    var normalizedVector = travelPath.Normalize();
-                    var factor = Convert.ToSingle(employee.Speed * step.TotalSeconds);
-                    var pathTravelledInTimeDelta = new Vector3(
-                        normalizedVector.X * factor,
-                        normalizedVector.Y * factor,
-                        normalizedVector.Z * factor);
-                    employee.CurrentLocation += pathTravelledInTimeDelta;
+                if (employee.Status == Employee.EmployeeStatus.ReturningToHome)
+                {
+                    MoveEmployeeTowards(employee, new Vector3(0, 0, 0), Convert.ToSingle(employee.Speed * step.TotalSeconds), context);
+
+                    if (Convert.ToInt32(employee.CurrentLocation.X) == 0
+                        && Convert.ToInt32(employee.CurrentLocation.Y) == 0)
+                    {
+                        employee.PickingTour = null;
+                        employee.Status = Employee.EmployeeStatus.Traveling;
+                    }
                 }
             }
+        }
+
+        private void MoveEmployeeTowards(Employee employee, Vector3 target, float distance, SimulationContext context)
+        {
+            var travelPath = employee.CurrentLocation.X == target.X && employee.CurrentLocation.Y == target.Y
+                ? target - employee.CurrentLocation
+                : Pathfinder.GetNextLocation(employee.CurrentLocation, target, context) - employee.CurrentLocation;
+            var normalizedVector = travelPath.Normalize();
+            var pathTravelledInTimeDelta = new Vector3(
+                normalizedVector.X * distance,
+                normalizedVector.Y * distance,
+                normalizedVector.Z * distance);
+            employee.CurrentLocation += pathTravelledInTimeDelta;
         }
     }
 }
