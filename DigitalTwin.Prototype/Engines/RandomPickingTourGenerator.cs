@@ -17,7 +17,7 @@ namespace DigitalTwin.Prototype.Engines
         public override void UpdateWorld(SimulationContext context, TimeSpan step)
         {
             var warehouse = context.World.Objects.First() as Warehouse;
-            if (nextPickingTourGenerationTime < DateTime.Now)
+            if (nextPickingTourGenerationTime < DateTime.Now && randomGenerator.Next(0,3) == 1)
             {
                 var amountOfPicks = randomGenerator.Next(minValue: 1, maxValue: 5);
                 var ipsAlreadyInPickingTour = warehouse

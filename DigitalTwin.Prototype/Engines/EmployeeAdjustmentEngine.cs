@@ -19,7 +19,7 @@ namespace DigitalTwin.Prototype.Engines
                 warehouse.Objects.Add(
                     new Employee
                     {
-                        Speed = random.Next(1, 3),
+                        Speed = random.Next(5, 5),
                         CurrentLocation = new Vector3(0, 0, 0),
                         Status = Employee.EmployeeStatus.Traveling,
                     }

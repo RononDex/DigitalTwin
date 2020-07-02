@@ -22,14 +22,14 @@ namespace DigitalTwin.Prototype
             var warehouse = new Warehouse();
             var employee1 = new Employee
             {
-                Speed = 2.5F, // change this?
+                Speed = 5F, // change this?
                 CurrentLocation = new Vector3(0, 0, 0),
                 Status = Employee.EmployeeStatus.Traveling,
             };
 
             var employee2 = new Employee
             {
-                Speed = 2.1F, // change this?
+                Speed = 5F, // change this?
                 CurrentLocation = new Vector3(0, 0, 0),
                 Status = Employee.EmployeeStatus.Traveling,
             };
