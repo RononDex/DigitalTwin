@@ -10,11 +10,11 @@ namespace DigitalTwin.Prototype.Engines
     {
         public override void UpdateWorld(SimulationContext context, TimeSpan step)
         {
-            var random = new Random((int) step.Ticks);
+            var random = new Random((int)step.Ticks);
             var warehouse = context.World.Objects.First() as Warehouse;
-            while (warehouse.PickingTours.Count > warehouse.Employees.Count)
+            if (warehouse.PickingTours.Count(p => p.State == PickingTour.PickingTourState.New) > 2)
             {
-                warehouse.Employees.Add(
+                warehouse.Objects.Add(
                     new Employee
                     {
                         Speed = random.Next(1, 3),
