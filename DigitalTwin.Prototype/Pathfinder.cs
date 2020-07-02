@@ -24,7 +24,7 @@ namespace DigitalTwin.Prototype{
                 current = openList.Aggregate((min, l) => min = min.F < l.F ? min : l);
 
                 closedList.Add(current);
-                if (current.XYZ.X == target.XYZ.X && current.XYZ.Y == target.XYZ.Y-1)
+                if (IsInFrontOfTarget(current, target))
                     break;
                 
                 openList.Remove(current);
@@ -66,7 +66,7 @@ namespace DigitalTwin.Prototype{
                 }
             }
 
-            var nextStep = closedList.FirstOrDefault(l => l.XYZ.X == target.XYZ.X && l.XYZ.Y == target.XYZ.Y-1);
+            var nextStep = closedList.FirstOrDefault(l => IsInFrontOfTarget(l, target));
             while(nextStep.Parent.XYZ != start.XYZ){
                 nextStep = nextStep.Parent;
             }
@@ -102,6 +102,10 @@ namespace DigitalTwin.Prototype{
                 .Where(l => !warehouse.Employees.Any(e => e.CurrentLocation.Floor() == l.XYZ.Floor()))
                 .Where(l => l.XYZ.X >= 0 && l.XYZ.Y >= 0 && l.XYZ.X < warehouse.WarehouseCompartments.Max(wc => wc.Location.X) + 7 && l.XYZ.Z < warehouse.WarehouseCompartments.Max(wc => wc.Location.Y) + 7)
                 .ToList();
+        }
+
+        private static bool IsInFrontOfTarget(Location current, Location target){
+           return current.XYZ.X == target.XYZ.X && (current.XYZ.Y == target.XYZ.Y-1 || current.XYZ.Y == target.XYZ.Y+1);
         }
 
         private class Location{
