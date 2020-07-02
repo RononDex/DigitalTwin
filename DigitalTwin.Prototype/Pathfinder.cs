@@ -105,7 +105,7 @@ namespace DigitalTwin.Prototype{
         }
 
         private static bool IsInFrontOfTarget(Location current, Location target){
-           return current.XYZ.X == target.XYZ.X && (current.XYZ.Y == target.XYZ.Y-1 || current.XYZ.Y == target.XYZ.Y+1);
+           return current.XYZ.X >= target.XYZ.X-1 && current.XYZ.X <= target.XYZ.X+1 && current.XYZ.Y >= target.XYZ.Y-1 && current.XYZ.Y <= target.XYZ.Y+1;
         }
 
         private class Location{
