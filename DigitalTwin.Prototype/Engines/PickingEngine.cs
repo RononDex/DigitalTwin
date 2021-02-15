@@ -7,7 +7,7 @@ namespace DigitalTwin.Prototype.Engines
 {
     public class PickingEngine : SimulationEngine
     {
-        private static TimeSpan timeRequiredPerPick = new TimeSpan(hours: 0, minutes: 0, seconds: 10);
+        private static TimeSpan timeRequiredPerPick = new TimeSpan(hours: 0, minutes: 0, seconds: 3);
 
         public override void UpdateWorld(SimulationContext context, TimeSpan step)
         {

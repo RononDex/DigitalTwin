@@ -39,12 +39,12 @@ namespace DigitalTwin.Prototype.Engines
                     MoveEmployeeTowards(
                         employee,
                         employee.PickingTour.CurrentPick.WarehouseCompartment.Location,
-                        Convert.ToSingle(employee.Speed * step.TotalSeconds));
+                        Convert.ToSingle(employee.Speed * step.TotalSeconds), context);
                 }
 
                 if (employee.Status == Employee.EmployeeStatus.ReturningToHome)
                 {
-                    MoveEmployeeTowards(employee, new Vector3(0, 0, 0), Convert.ToSingle(employee.Speed * step.TotalSeconds));
+                    MoveEmployeeTowards(employee, new Vector3(0, 0, 0), Convert.ToSingle(employee.Speed * step.TotalSeconds), context);
 
                     if (Convert.ToInt32(employee.CurrentLocation.X) == 0
                         && Convert.ToInt32(employee.CurrentLocation.Y) == 0)
@@ -56,9 +56,11 @@ namespace DigitalTwin.Prototype.Engines
             }
         }
 
-        private void MoveEmployeeTowards(Employee employee, Vector3 target, float distance)
+        private void MoveEmployeeTowards(Employee employee, Vector3 target, float distance, SimulationContext context)
         {
-            var travelPath = target - employee.CurrentLocation;
+            var travelPath = employee.CurrentLocation.X >= target.X-1 && employee.CurrentLocation.X <= target.X+1 && employee.CurrentLocation.Y >= target.Y-1 && employee.CurrentLocation.Y <= target.Y+1
+                ? target - employee.CurrentLocation
+                : Pathfinder.GetNextLocation(employee.CurrentLocation, target, context) - employee.CurrentLocation;
             var normalizedVector = travelPath.Normalize();
             var pathTravelledInTimeDelta = new Vector3(
                 normalizedVector.X * distance,
